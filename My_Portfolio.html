@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muhammed Khaled — Portfolio</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
+<style>
+
+/* ---------- tokens ---------- */
+:root{
+  --bg: #07090F;
+  --bg-alt: #111928;
+  --panel: #111928;
+  --border: rgba(148,163,184,0.18);
+  --border-soft: rgba(148,163,184,0.12);
+  --text: #F7FAFF;
+  --text-dim: #94A3B8;
+  --text-faint: #64748B;
+  --accent: #2563EB;
+  --accent-soft: rgba(37,99,235,0.14);
+  --accent-2: #38BDF8;
+  --radius: 4px;
+  --serif-display: 'Poppins', sans-serif;
+  --body-font: 'Poppins', sans-serif;
+  --mono: 'Poppins', sans-serif;
+}
+
+*{ box-sizing: border-box; }
+
+html{ scroll-behavior: smooth; }
+
+body{
+  font-family: var(--body-font);
+  background-color: var(--bg);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+h1,h2,h3,h4{
+  font-family: var(--serif-display);
+  letter-spacing: -0.01em;
+}
+
+a{ color: var(--accent); }
+
+::selection{ background: var(--accent-soft); color: var(--text); }
+
+:focus-visible{
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  html{ scroll-behavior: auto; }
+}
+
+.container{ max-width: 1120px; }
+
+/* ---------- nav ---------- */
+.site-nav{
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: rgba(14,16,19,0.86);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.nav-inner{
+  max-width: 1120px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  position: relative;
+}
+
+.brand{
+  font-family: var(--serif-display);
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.brand-dot{ color: var(--accent); }
+
+.nav-links{
+  display: flex;
+  gap: 32px;
+}
+
+.nav-link{
+  color: var(--text-dim) !important;
+  text-decoration: none;
+  font-size: 14.5px;
+  padding: 4px 0;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.nav-link:hover,
+.nav-link.active{
+  color: var(--text) !important;
+  border-bottom-color: var(--accent);
+}
+
+.nav-toggle{
+  display: none;
+  background: none;
+  border: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: 6px;
+  cursor: pointer;
+}
+
+.nav-toggle span{
+  width: 22px;
+  height: 2px;
+  background: var(--text);
+  display: block;
+}
+
+@media (max-width: 860px){
+  .nav-toggle{ display: flex; }
+  .navbar-collapse{
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .navbar-collapse .nav-links{
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 24px 20px;
+  }
+  .navbar-collapse .nav-link{ padding: 10px 0; }
+}
+
+/* ---------- layout basics ---------- */
+.section{ padding: 110px 24px; }
+.alt-section{ background: var(--bg-alt); }
+
+.section-heading{
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 40px;
+}
+
+.section-sub{
+  color: var(--text-dim);
+  max-width: 56ch;
+  margin-bottom: 48px;
+}
+
+.body-copy{
+  color: var(--text-dim);
+  max-width: 62ch;
+  margin-bottom: 20px;
+}
+
+.body-copy:last-child{ margin-bottom: 0; }
+
+/* ---------- hero ---------- */
+.hero{
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 140px 24px 80px;
+  background: var(--bg);
+}
+
+.hero-name{
+  position: relative;
+  font-size: clamp(40px, 6vw, 62px);
+  font-weight: 700;
+  line-height: 1.05;
+  margin-bottom: 18px;
+  color: var(--text);
+  transition: color .25s ease;
+  opacity: 0;
+  animation: rise 0.7s ease forwards;
+}
+
+.hero-name.cursor-gradient{
+  color: var(--text);
+}
+
+.hero-name.cursor-gradient::after{
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  color: transparent;
+  background-image: radial-gradient(circle at var(--pointer-x) var(--pointer-y), var(--sky) 0%, var(--blue) 18%, var(--text) 54%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  pointer-events: none;
+}
+
+.hero-role{
+  font-family: var(--mono);
+  font-size: 16px;
+  color: var(--accent);
+  margin-bottom: 22px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  width: 100%;
+  opacity: 0;
+  animation: rise 0.7s ease 0.12s forwards;
+}
+
+.hero-lede{
+  color: var(--text-dim);
+  max-width: 46ch;
+  font-size: 17px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  width: 100%;
+  margin-bottom: 36px;
+  opacity: 0;
+  animation: rise 0.7s ease 0.22s forwards;
+}
+
+.hero .row{ justify-content:center; text-align:center; }
+.hero .col-lg-7{ flex:0 0 auto; width:100%; max-width:820px; }
+.hero-actions{ justify-content:center; }
+.hero .code-panel{ display:none; }
+
+.hero-actions{
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: rise 0.7s ease 0.32s forwards;
+}
+
+@keyframes rise{
+  from{ opacity: 0; transform: translateY(14px); }
+  to{ opacity: 1; transform: translateY(0); }
+}
+
+.btn-primary-custom,
+.btn-secondary-custom{
+  font-family: var(--body-font);
+  font-weight: 500;
+  font-size: 15px;
+  padding: 12px 26px;
+  border-radius: var(--radius);
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+  display: inline-block;
+}
+
+.btn-primary-custom{
+  background: var(--accent);
+  color: var(--text);
+  border: 1px solid var(--accent);
+}
+
+.btn-primary-custom:hover{
+  background: #38BDF8;
+  color: var(--bg);
+  transform: translateY(-1px);
+  box-shadow: 0 0 26px rgba(56,189,248,0.35);
+}
+
+.btn-secondary-custom{
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.btn-secondary-custom:hover{
+  border-color: var(--text-dim);
+  transform: translateY(-1px);
+  color: var(--text);
+  box-shadow: 0 0 22px rgba(56,189,248,0.22);
+}
+
+/* code panel */
+.code-panel{
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  opacity: 0;
+  animation: rise 0.8s ease 0.2s forwards;
+}
+
+.code-panel-tab{
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--text-dim);
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.code-panel-body{
+  margin: 0;
+  padding: 22px 20px;
+  font-family: var(--mono);
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--text-dim);
+  white-space: pre-wrap;
+}
+
+.code-panel-body .k{ color: var(--accent-2); }
+.code-panel-body .v{ color: var(--text); }
+
+/* ---------- about ---------- */
+.credential-list{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.credential-list li{
+  border-top: 1px solid var(--border);
+  padding: 18px 0;
+}
+
+.credential-list li:last-child{
+  border-bottom: 1px solid var(--border);
+}
+
+.credential-label{
+  display: block;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--accent-2);
+  margin-bottom: 6px;
+}
+
+.credential-value{
+  display: block;
+  color: var(--text-dim);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+/* ---------- accordion ---------- */
+.custom-accordion{ border-top: 1px solid var(--border); }
+
+.custom-accordion .accordion-item{
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+}
+
+.custom-accordion .accordion-button{
+  background: transparent;
+  color: var(--text);
+  box-shadow: none;
+  font-family: var(--serif-display);
+  font-weight: 600;
+  font-size: 19px;
+  padding: 26px 4px;
+}
+
+.custom-accordion .accordion-button:not(.collapsed){
+  background: transparent;
+  color: var(--accent);
+}
+
+.custom-accordion .accordion-button:focus{
+  box-shadow: none;
+}
+
+.custom-accordion .accordion-button::after{
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%238D93A0' stroke-width='1.6'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
+  width: 16px;
+  height: 16px;
+}
+
+.custom-accordion .accordion-button:not(.collapsed)::after{
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%2338BDF8' stroke-width='1.6'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
+}
+
+.acc-tag{
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text-faint);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 3px 8px;
+  margin-right: 14px;
+  vertical-align: middle;
+}
+
+.custom-accordion .accordion-body{
+  padding: 4px 4px 40px;
+}
+
+.acc-block{ margin-bottom: 30px; }
+.acc-block:last-child{ margin-bottom: 0; }
+
+.acc-block h4{
+  font-family: var(--body-font);
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.acc-block p{
+  color: var(--text-dim);
+  max-width: 62ch;
+  margin: 0;
+}
+
+.tag-list{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag{
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 5px 11px;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.tag:hover{
+  border-color: var(--accent-2);
+  color: var(--text);
+  box-shadow: 0 0 16px rgba(56,189,248,0.18);
+}
+
+.showcase-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:24px; }
+.showcase-card{ background:var(--panel); border:1px solid var(--border); border-radius:6px; overflow:hidden; transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
+.showcase-card:hover{ border-color:var(--accent-2); box-shadow:0 12px 38px rgba(37,99,235,.2); transform:translateY(-5px); }
+.showcase-card img{ width:100%; aspect-ratio:3/2; object-fit:cover; display:block; transition:filter .25s ease; }
+.showcase-card:hover img{ filter:saturate(1.15); }
+.showcase-card-content{ padding:22px; }
+.showcase-card h4,.certificate-card h4,.comp-item h4{ color:var(--text); font-size:18px; margin-bottom:10px; }
+.showcase-card p{ color:var(--text-dim); font-size:14px; }
+.showcase-actions{ display:flex; gap:10px; margin-top:18px; }
+.showcase-actions a{ font-size:13px; padding:9px 13px; }
+.certificate-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:24px; }
+.certificate-card{ background:var(--panel); border:1px solid var(--border); border-radius:6px; overflow:hidden; transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+.certificate-card:hover{ border-color:var(--accent-2); box-shadow:0 10px 32px rgba(37,99,235,.2); transform:translateY(-4px); }
+.certificate-card img{ width:100%; aspect-ratio:4/3; object-fit:cover; display:block; }
+.certificate-card .card-content{ padding:20px; }
+.certificate-card .card-content p,
+.certificate-card .card-content strong{ color:var(--text); }
+.certificate-card .credential-value{ color:var(--text) !important; }
+@media (max-width:768px){ .showcase-grid,.certificate-grid{ grid-template-columns:1fr; } }
+
+.comp-list{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+@media (max-width: 768px){
+  .comp-list{ grid-template-columns: 1fr; }
+}
+
+.comp-item h4{
+  font-family: var(--body-font);
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.comp-item p{
+  color: var(--text-dim);
+  font-size: 14.5px;
+  margin: 0;
+}
+
+/* ---------- contact ---------- */
+.contact-form label{
+  font-size: 13.5px;
+  color: var(--text-dim);
+  margin-bottom: 7px;
+  display: block;
+}
+
+.contact-form .form-control{
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  padding: 12px 14px;
+  font-size: 15px;
+}
+
+.contact-form .form-control:focus{
+  background: var(--panel);
+  border-color: var(--accent);
+  box-shadow: none;
+  color: var(--text);
+}
+
+.contact-form .form-control::placeholder{ color: var(--text-faint); }
+
+.contact-form textarea.form-control{
+  resize: none;
+  height: 130px;
+}
+
+.btn-send{
+  background: var(--accent);
+  border: none;
+  border-radius: var(--radius);
+  color: #14100A;
+  font-weight: 500;
+  padding: 13px 30px;
+  font-size: 15px;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.btn-send:hover{
+  background: #38BDF8;
+  transform: translateY(-1px);
+}
+
+.form-note{
+  font-size: 13px;
+  color: var(--text-faint);
+  margin-top: 12px;
+  min-height: 18px;
+}
+
+.connect-panel{
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 30px 26px;
+  height: 100%;
+}
+
+.connect-panel h4{
+  font-family: var(--body-font);
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--text-dim);
+  margin-bottom: 20px;
+}
+
+.connect-link{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0;
+  padding: 14px 0;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.connect-link i{ font-size: 28px; }
+
+.connect-link:hover{
+  color: var(--accent-2);
+  transform: translateY(-3px);
+}
+
+/* ---------- footer ---------- */
+.site-footer{
+  border-top: 1px solid var(--border);
+  padding: 28px 24px;
+}
+
+.footer-inner{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  color: var(--text-faint);
+  font-size: 13.5px;
+}
+
+.footer-links a{
+  color: var(--text-faint);
+  text-decoration: none;
+  margin-left: 18px;
+}
+
+.footer-links a:hover{ color: var(--accent); }
+
+</style>
+</head>
+
+<body data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-offset="120" tabindex="0">
+
+<nav class="site-nav" id="mainNav">
+  <div class="nav-inner">
+    <a href="#top" class="brand">Muhammed<span class="brand-dot">Khaled</span></a>
+    <button class="nav-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navCollapse" aria-controls="navCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navCollapse">
+      <div class="nav-links">
+        <a class="nav-link" href="#about">About</a>
+        <a class="nav-link" href="#work">Work</a>
+        <a class="nav-link" href="#contact">Contact</a>
+      </div>
+    </div>
+    <div class="nav-links d-none d-md-flex">
+      <a class="nav-link" href="#about">About</a>
+      <a class="nav-link" href="#work">Work</a>
+      <a class="nav-link" href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero" id="top">
+  <div class="container">
+    <div class="row align-items-center gy-5">
+      <div class="col-lg-7">
+        <h1 class="hero-name" data-text="Muhammed Khaled">Muhammed Khaled</h1>
+        <p class="hero-role">Aspiring AI Engineer &amp; Data Science Enthusiast</p>
+        <p class="hero-lede">Computer Science student turning raw, messy data into
+          structured insight — and building the interfaces that put it in
+          front of people.</p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn-primary-custom">Get in Touch <i class="fa-solid fa-arrow-right ms-2"></i></a>
+          <a href="#work" class="btn-secondary-custom">View Work <i class="fa-solid fa-arrow-down ms-2"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="code-panel">
+          <div class="code-panel-tab">profile.json</div>
+          <pre class="code-panel-body"><code>{
+  <span class="k">"name"</span>: <span class="v">"Muhammed Khaled"</span>,
+  <span class="k">"role"</span>: <span class="v">"Aspiring AI Engineer"</span>,
+  <span class="k">"focus"</span>: <span class="v">"Data Science"</span>,
+  <span class="k">"location"</span>: <span class="v">"Cairo, Efy"</span>
+}</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about" class="section">
+  <div class="container">
+    <div class="row gy-5">
+      <div class="col-lg-7">
+        <h2 class="section-heading">About</h2>
+        <p class="body-copy">I'm a third-year Computer Science student at El
+          Shorouk Academy, currently working through the Data Science track
+          of the DEPI program — a 21-week program run in partnership with
+          IBM and NTI.</p>
+        <p class="body-copy">I'm most interested in the middle ground between
+          data and interface: pulling structure out of messy sources, and
+          building the frontend that makes the result usable for someone
+          else.</p>
+      </div>
+      <div class="col-lg-4 offset-lg-1">
+        <ul class="credential-list">
+          <li>
+            <span class="credential-label">Education</span>
+            <span class="credential-value">Bachelor's in Computer Science,
+              El Shorouk Academy — 3rd year</span>
+          </li>
+          <li>
+            <span class="credential-label">Program</span>
+            <span class="credential-value">DEPI Data Science track,
+              21 weeks, delivered with IBM and NTI</span>
+          </li>
+          <li>
+            <span class="credential-label">Location</span>
+            <span class="credential-value">Cairo, Egypt</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="work" class="section alt-section">
+  <div class="container">
+    <h2 class="section-heading">Experience &amp; skills</h2>
+
+    <div class="accordion custom-accordion" id="mainAccordion">
+
+      <div class="accordion-item">
+        <h3 class="accordion-header" id="heading-exp">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-exp" aria-expanded="false" aria-controls="collapse-exp">
+            <span class="acc-tag">EXP</span> Experience &amp; projects
+          </button>
+        </h3>
+        <div id="collapse-exp" class="accordion-collapse collapse" aria-labelledby="heading-exp" data-bs-parent="#mainAccordion">
+          <div class="accordion-body">
+            <div class="showcase-grid">
+              <article class="showcase-card">
+                <img src="https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&amp;fit=crop&amp;w=900&amp;q=85" alt="Books arranged on a shelf for a book scraping project" loading="lazy">
+                <div class="showcase-card-content"><h4>Book Catalog Scraper</h4>
+                  <div class="tag-list mb-3"><span class="tag">Python</span><span class="tag">Requests</span><span class="tag">Beautiful Soup</span><span class="tag">pandas</span></div>
+                  <p>Scrapes 50 pages from Books to Scrape, collecting book titles, prices, star ratings, availability, and product links before exporting the results to a clean CSV dataset.</p>
+                  <div class="showcase-actions"><a href="https://github.com/MuhammedDev60/BookScraper" target="_blank" rel="noopener" class="btn-secondary-custom">View Code <i class="fa-brands fa-github ms-1"></i></a></div>
+                </div>
+              </article>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h3 class="accordion-header" id="heading-cert">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-cert" aria-expanded="false" aria-controls="collapse-cert">
+            <span class="acc-tag">CRT</span> Digital certifications
+          </button>
+        </h3>
+        <div id="collapse-cert" class="accordion-collapse collapse" aria-labelledby="heading-cert" data-bs-parent="#mainAccordion">
+          <div class="accordion-body"><div class="certificate-grid">
+            <article class="certificate-card"><img src="images/Oracle.png" alt="Oracle AI For You certification" loading="lazy" style="background-color: #FFFFFF; padding: 0;"><div class="card-content"><h4>Oracle &ldquo;AI For You&rdquo;</h4><p class="mb-1">Issued by <strong>Oracle</strong></p><p class="credential-value mb-0">Issued 2026</p></div></article>
+            <article class="certificate-card"><img src="images/1788459240755-979c292c-cd4c-4c01-b023-9ec5f4d5bd92_1.png" alt="Ideation - Enterpaurenship certification" loading="lazy"><div class="card-content"><h4>Ideation - Enterpaurenship</h4><p class="mb-1">Issued by <strong>DEPI &amp; Microsoft</strong></p><p class="credential-value mb-0">Issued November 19, 2025</p></div></article>
+            <article class="certificate-card"><img src="images/1788459308940-8248ff0d-6c84-4c51-a441-c348cb81824c_1.png" alt="Pre Incubation - Enterpaurenship certification" loading="lazy"><div class="card-content"><h4>Pre Incubation - Enterpaurenship</h4><p class="mb-1">Issued by <strong>DEPI &amp; Microsoft</strong></p><p class="credential-value mb-0">Issued December 4, 2025</p></div></article>
+          </div></div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h3 class="accordion-header" id="heading-skl">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-skl" aria-expanded="false" aria-controls="collapse-skl">
+            <span class="acc-tag">SKL</span> Technical skills
+          </button>
+        </h3>
+        <div id="collapse-skl" class="accordion-collapse collapse" aria-labelledby="heading-skl" data-bs-parent="#mainAccordion">
+          <div class="accordion-body">
+            <div class="acc-block">
+              <h4>AI &amp; data science</h4>
+              <div class="tag-list">
+                <span class="tag">Python</span>
+                <span class="tag">pandas</span>
+                <span class="tag">Beautiful Soup</span>
+                <span class="tag">Jupyter Notebook</span>
+                <span class="tag">Google Colab</span>
+              </div>
+            </div>
+            <div class="acc-block">
+              <h4>Software development</h4>
+              <div class="tag-list">
+                <span class="tag">C#</span>
+                <span class="tag">HTML</span>
+                <span class="tag">CSS</span>
+                <span class="tag">JavaScript</span>
+                <span class="tag">Bootstrap</span>
+                <span class="tag">GitHub</span>
+                <span class="tag">VS Code</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h3 class="accordion-header" id="heading-pro">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-pro" aria-expanded="false" aria-controls="collapse-pro">
+            <span class="acc-tag">PRO</span> Professional competencies
+          </button>
+        </h3>
+        <div id="collapse-pro" class="accordion-collapse collapse" aria-labelledby="heading-pro" data-bs-parent="#mainAccordion">
+          <div class="accordion-body">
+            <div class="comp-list">
+              <div class="comp-item">
+                <h4>Problem solving</h4>
+                <p>Breaking messy, open-ended problems into steps I can
+                  actually work through and test.</p>
+              </div>
+              <div class="comp-item">
+                <h4>Client &amp; stakeholder communication</h4>
+                <p>Translating technical work into terms that make sense to
+                  the person who asked for it.</p>
+              </div>
+              <div class="comp-item">
+                <h4>Learning &amp; adaptation</h4>
+                <p>Comfortable picking up new tools and adjusting course
+                  when a project needs it.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="section">
+  <div class="container">
+    <h2 class="section-heading">Contact</h2>
+    <p class="section-sub">Get in touch through email or connect on social platforms.</p>
+
+    <div class="row gy-5">
+      <div class="col-lg-12">
+        <div class="connect-panel" style="text-align: center; border: none; padding: 40px;">
+          <h4 style="font-size: 16px; margin-bottom: 30px;">Reach me on</h4>
+          <div style="display: flex; justify-content: center; gap: 30px;">
+            <a href="mailto:muhammedkhaled366@gmail.com" class="connect-link" aria-label="Email" title="Email"><i class="fa-solid fa-envelope" style="font-size: 48px;"></i></a>
+            <a href="https://github.com/MuhammedDev60" target="_blank" rel="noopener" class="connect-link" aria-label="GitHub" title="GitHub"><i class="fa-brands fa-github" style="font-size: 48px;"></i></a>
+            <a href="https://www.linkedin.com/in/muhammed-khaled-998b41319/" target="_blank" rel="noopener" class="connect-link" aria-label="LinkedIn" title="LinkedIn"><i class="fa-brands fa-linkedin" style="font-size: 48px;"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <span>© 2026 Muhammed Khaled</span>
+    <span class="footer-links">
+      <a href="https://github.com/MuhammedDev60" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/muhammed-khaled-998b41319/" target="_blank">LinkedIn</a>
+    </span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+
+  var heroName = document.querySelector('.hero-name');
+  heroName.addEventListener('pointermove', function(e){
+    var bounds = heroName.getBoundingClientRect();
+    heroName.style.setProperty('--pointer-x', (e.clientX - bounds.left) + 'px');
+    heroName.style.setProperty('--pointer-y', (e.clientY - bounds.top) + 'px');
+    heroName.classList.add('cursor-gradient');
+  });
+  heroName.addEventListener('pointerleave', function(){
+    heroName.classList.remove('cursor-gradient');
+  });
+</script>
+
+</body>
+</html>
